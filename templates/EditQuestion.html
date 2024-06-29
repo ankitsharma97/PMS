@@ -1,0 +1,119 @@
+{% extends "./base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Edit Problem</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="day" class="form-label">Day</label>
+                <input type="number" class="form-control" id="day" name="day" value="{{ problem.day }}" required>
+            </div>
+            <div class="col-md-6">
+                <label for="problem_name" class="form-label">Problem Name</label>
+                <input type="text" class="form-control" id="problem_name" name="problem_name" maxlength="255" value="{{ problem.problem_name }}" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="problem_link" class="form-label">Problem Link</label>
+                <input type="url" class="form-control" id="problem_link" name="problem_link" maxlength="500" value="{{ problem.problem_link }}" required>
+            </div>
+            <div class="col-md-6">
+                <label for="difficulty" class="form-label">Difficulty</label>
+                <input type="text" class="form-control" id="difficulty" name="difficulty" maxlength="50" value="{{ problem.difficulty }}" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="topic" class="form-label">Topic</label>
+                <input type="text" class="form-control" id="topic" name="topic" maxlength="100" value="{{ problem.topic }}" required>
+            </div>
+            <div class="col-md-6">
+                <label for="subtopic" class="form-label">Subtopic</label>
+                <input type="text" class="form-control" id="subtopic" name="subtopic" maxlength="100" value="{{ problem.subtopic }}" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="final_youtube_link" class="form-label">Final YouTube Link</label>
+                <input type="url" class="form-control" id="final_youtube_link" name="final_youtube_link" maxlength="500" value="{{ problem.final_youtube_link }}">
+            </div>
+            <div class="col-md-6">
+                <label for="record_by" class="form-label">Record By</label>
+                <input type="text" class="form-control" id="record_by" name="record_by" maxlength="100" value="{{ problem.record_by }}" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="hint_writer" class="form-label">Hint Writer</label>
+                <select class="form-select" id="hint_writer" name="hint_writer" required disabled>
+                    {% for role in assigned_roles %}
+                        <option value="{{ role.id }}" {% if role.id == problem.hint_writer.id %}selected{% endif %}>
+                            {{ role.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <input type="hidden" name="hint_writer" value="{{ problem.hint_writer.id }}">
+                
+            </div>
+            <div class="col-md-6">
+                <label for="deadline" class="form-label">Deadline</label>
+                <input type="date" class="form-control" id="deadline" name="deadline" value="{{ problem.deadline|date:'Y-m-d' }}" required readonly>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="small_hint" class="form-label">Small Hint</label>
+                <textarea class="form-control" id="small_hint" name="small_hint" rows="3">{{ problem.small_hint }}</textarea>
+            </div>
+            <div class="col-md-6">
+                <label for="big_hint" class="form-label">Big Hint</label>
+                <textarea class="form-control" id="big_hint" name="big_hint" rows="3">{{ problem.big_hint }}</textarea>
+            </div>
+        </div>
+        {% if request.session.role ==  'Hint_Reviewer' or request.session.role ==  'Manager' %}
+        
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="reviewer" class="form-label">Reviewer</label>
+                <select class="form-select" id="reviewer" name="reviewer" disabled>
+                    {% for role in assigned_roles %}
+                        <option value="{{ role.id }}" {% if role.id == problem.reviewer.id %}selected{% endif %}>
+                            {{ role.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <input type="hidden" name="reviewer" value="{{ problem.reviewer.id }}">
+                
+            </div>
+            <div class="col-md-6 form-check">
+                <input type="checkbox" class="form-check-input" id="reviewed" name="reviewed" {% if problem.reviewed %}checked{% endif %}>
+                <label class="form-check-label" for="reviewed">Reviewed</label>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="reviewer_deadline" class="form-label">Reviewer Deadline</label>
+                <input type="date" class="form-control" id="reviewer_deadline" name="reviewer_deadline" value="{{ problem.reviewer_deadline|date:'Y-m-d' }}" required readonly>
+            </div>
+            <div class="col-md-6">
+                <label for="remark_for_small_hint" class="form-label">Remark for Small Hint</label>
+                <textarea class="form-control" id="remark_for_small_hint" name="remark_for_small_hint" rows="3">{{ problem.remark_for_small_hint }}</textarea>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label for="remark_for_big_hint" class="form-label">Remark for Big Hint</label>
+                <textarea class="form-control" id="remark_for_big_hint" name="remark_for_big_hint" rows="3">{{ problem.remark_for_big_hint }}</textarea>
+            </div>
+        </div>
+        {% endif %}
+        <button type="submit" class="btn btn-primary mb-2">Update Problem</button>
+    </form>
+</div>
+
+{% endblock %}

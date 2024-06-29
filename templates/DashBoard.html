@@ -1,0 +1,158 @@
+{% extends "./base.html" %}
+
+{% block content %}
+<div id="ContentPlaceHolder1_divContainer" class="container-fluid bg-white rounded-2 px-4">
+    <div class="row justify-content-center">
+
+        <div class="card mb-2 w-100">
+            <div class="card-body mt-3">
+                <div id="divPrint">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive w-100">
+                                {%if request.session.role == 'Manager'%}
+                                <h4>Reviewed Questions</h4>
+                                <div>
+                                    <table class="table table-bordered w-100" cellspacing="0" rules="all" border="1" id="ContentPlaceHolder1_GridView1" style="background-color:White;border-collapse:collapse;">
+                                        <thead>
+                                            <tr align="center" valign="middle" style="color:White;background-color:Black;font-family:Calibri;font-size:12px;font-weight:bold;height:40px;">
+                                                <th scope="col">S.No</th>
+                                                <th scope="col">Day</th>
+                                                <th scope="col">Problem Name</th>
+                                                <th scope="col">Problem Link</th>
+                                                <th scope="col">Difficulty</th>
+                                                <th scope="col">Topic</th>
+                                                <th scope="col">Subtopic</th>
+                                                <th scope="col">Hint Writer</th>
+                                                <th scope="col">Reviewer</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for problem in problemsR %}
+                                        
+                                            <tr style="height:40px;">
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ problem.day }}</td>
+                                                <td>{{ problem.problem_name }}</td>
+                                                <td><a href="{{ problem.problem_link }}" target="_blank">Link</a></td>
+                                                <td>{{ problem.difficulty }}</td>
+                                                <td>{{ problem.topic }}</td>
+                                                <td>{{ problem.subtopic }}</td>
+                                                <td>{{ problem.hint_writer.name }}</td>
+                                                <td>{{ problem.reviewer.name }}</td>
+                                                {{request.session.role  }}
+                                                <td>
+                                                    <a class="btn btn-warning btn-sm" href="{% url "editQ" problem.id %}">{% if request.session.role == 'Manager' %}
+                                                    View
+                                                    {% else %}
+                                                    Edit
+                                                    {% endif %}</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% endif %}
+                                {%if request.session.role == 'Hint_Writter' or request.session.role == 'Manager'%}
+                                <h4>Pending Question At Hint_Writter</h4>
+                                <div>
+                                    <table class="table table-bordered w-100" cellspacing="0" rules="all" border="1" id="ContentPlaceHolder1_GridView1" style="background-color:White;border-collapse:collapse;">
+                                        <thead>
+                                            <tr align="center" valign="middle" style="color:White;background-color:Black;font-family:Calibri;font-size:12px;font-weight:bold;height:40px;">
+                                                <th scope="col">S.No</th>
+                                                <th scope="col">Day</th>
+                                                <th scope="col">Problem Name</th>
+                                                <th scope="col">Problem Link</th>
+                                                <th scope="col">Difficulty</th>
+                                                <th scope="col">Topic</th>
+                                                <th scope="col">Subtopic</th>
+                                                <th scope="col">Hint Writer</th>
+                                                <th scope="col">Reviewer</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for problem in problemsPH %}
+                                        
+                                            <tr style="height:40px;">
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ problem.day }}</td>
+                                                <td>{{ problem.problem_name }}</td>
+                                                <td><a href="{{ problem.problem_link }}" target="_blank">Link</a></td>
+                                                <td>{{ problem.difficulty }}</td>
+                                                <td>{{ problem.topic }}</td>
+                                                <td>{{ problem.subtopic }}</td>
+                                                <td>{{ problem.hint_writer.name }}</td>
+                                                <td>{{ problem.reviewer.name }}</td>
+                                                <td>
+                                                    <a class="btn btn-warning btn-sm" href="{% url "editQ" problem.id %}">{% if request.session.role == 'Manager' %}
+                                                        View
+                                                        {% else %}
+                                                        Edit
+                                                        {% endif %}
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% endif %}
+                                {%if request.session.role == 'Hint_Reviewer' or request.session.role == 'Manager'%}
+                                <h4>Pending Question At Reviewer</h4>
+                                <div>
+                                    <table class="table table-bordered w-100" cellspacing="0" rules="all" border="1" id="ContentPlaceHolder1_GridView1" style="background-color:White;border-collapse:collapse;">
+                                        <thead>
+                                            <tr align="center" valign="middle" style="color:White;background-color:Black;font-family:Calibri;font-size:12px;font-weight:bold;height:40px;">
+                                                <th scope="col">S.No</th>
+                                                <th scope="col">Day</th>
+                                                <th scope="col">Problem Name</th>
+                                                <th scope="col">Problem Link</th>
+                                                <th scope="col">Difficulty</th>
+                                                <th scope="col">Topic</th>
+                                                <th scope="col">Subtopic</th>
+                                                <th scope="col">Hint Writer</th>
+                                                <th scope="col">Reviewer</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for problem in problemsPR %}
+                                        
+                                            <tr style="height:40px;">
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ problem.day }}</td>
+                                                <td>{{ problem.problem_name }}</td>
+                                                <td><a href="{{ problem.problem_link }}" target="_blank">Link</a></td>
+                                                <td>{{ problem.difficulty }}</td>
+                                                <td>{{ problem.topic }}</td>
+                                                <td>{{ problem.subtopic }}</td>
+                                                <td>{{ problem.hint_writer.name }}</td>
+                                                <td>{{ problem.reviewer.name }}</td>
+                                                <td>
+                                                    <a class="btn btn-warning btn-sm" href="{% url "editQ" problem.id %}">{% if request.session.role == 'Manager' %}
+                                                        View
+                                                        {% else %}
+                                                        Edit
+                                                        {% endif %}
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

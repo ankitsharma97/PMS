@@ -1,0 +1,83 @@
+{% extends "./base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Add New Problem</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="day" class="form-label">Day</label>
+                <input type="number" class="form-control" id="day" name="day" required>
+            </div>
+            <div class="col-md-6">
+                <label for="problem_name" class="form-label">Problem Name</label>
+                <input type="text" class="form-control" id="problem_name" name="problem_name" maxlength="255" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="problem_link" class="form-label">Problem Link</label>
+                <input type="url" class="form-control" id="problem_link" name="problem_link" maxlength="500" required>
+            </div>
+            <div class="col-md-6">
+                <label for="difficulty" class="form-label">Difficulty</label>
+                <input type="text" class="form-control" id="difficulty" name="difficulty" maxlength="50" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="topic" class="form-label">Topic</label>
+                <input type="text" class="form-control" id="topic" name="topic" maxlength="100" required>
+            </div>
+            <div class="col-md-6">
+                <label for="subtopic" class="form-label">Subtopic</label>
+                <input type="text" class="form-control" id="subtopic" name="subtopic" maxlength="100" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="final_youtube_link" class="form-label">Final YouTube Link</label>
+                <input type="url" class="form-control" id="final_youtube_link" name="final_youtube_link" maxlength="500">
+            </div>
+            <div class="col-md-6">
+                <label for="record_by" class="form-label">Record By</label>
+                <input type="text" class="form-control" id="record_by" name="record_by" maxlength="100" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="hint_writer" class="form-label">Hint Writer</label>
+                <select class="form-select" id="hint_writer" name="hint_writer" required>
+                    <option value="">Select Hint Writer</option>
+                    {% for writer in hint_writers %}
+                        <option value="{{ writer.id }}">{{ writer.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="deadline" class="form-label">Deadline</label>
+                <input type="date" class="form-control" id="deadline" name="deadline" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="reviewer" class="form-label">Reviewer</label>
+                <select class="form-select" id="reviewer" name="reviewer" required>
+                    <option value="">Select Reviewer</option>
+                    {% for reviewer in reviewers %}
+                        <option value="{{ reviewer.id }}">{{ reviewer.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="reviewer_deadline" class="form-label">Reviewer Deadline</label>
+                <input type="date" class="form-control" id="reviewer_deadline" name="reviewer_deadline" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Submit</button>
+    </form>
+</div>
+{% endblock %}
