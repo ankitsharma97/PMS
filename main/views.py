@@ -36,12 +36,12 @@ def login(request):
     return render(request, 'login.html')
 
 
-@login_required
+@login_required(login_url='login')
 def logout(request):
     auth_logout(request)
     return redirect('login')
 
-@login_required
+@login_required(login_url='login')
 def DashBoard(request):
     role = request.session.get('role')
 
@@ -63,13 +63,13 @@ def DashBoard(request):
         return render(request, 'DashBoard.html', {'problemsPH': problemsPH})
     
     elif role == 'Hint_Reviewer':
-        problemsPR = Problem.objects.filter(reviewed=False, small_hint__isnull=False)
+        problemsPR = Problem.objects.filter(reviewed=False).exclude(small_hint='')
         return render(request, 'DashBoard.html', {'problemsPR': problemsPR})
     
     else:
         return redirect('login')
 
-@login_required
+@login_required(login_url='login')
 def AddQuestion(request):
     Hrole = Role.objects.get(name='Hint_Writter')
     Rrole = Role.objects.get(name='Hint_Reviewer')
@@ -115,7 +115,7 @@ def AddQuestion(request):
 
     return render(request, 'AddQuestion.html', {'hint_writers': hint_writers, 'reviewers': reviewers})
 
-@login_required
+@login_required(login_url='login')
 def EditQuestion(request, Pid):
     problem = get_object_or_404(Problem, id=Pid)
     assigned_roles = Assigned_Role.objects.all()
